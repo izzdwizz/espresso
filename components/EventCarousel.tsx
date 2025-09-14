@@ -73,7 +73,7 @@ const EventCarousel: React.FC<EventCarouselProps> = ({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-espresso-primary to-espresso-primary-dark flex items-center justify-center">
+                  <div className="w-full h-full pb-4 bg-gradient-to-br from-espresso-primary to-espresso-primary-dark flex items-center justify-center">
                     <span className="text-white text-lg font-semibold">
                       {event.location}
                     </span>

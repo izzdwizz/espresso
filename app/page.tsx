@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/Header";
 import EventControls from "@/components/EventControls";
@@ -110,11 +110,11 @@ export default function Home() {
 
         {/* Sign Up Section */}
         <section className="py-16 px-4 bg-espresso-primary">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-4xl mx-auto text-center future-events">
             <h2 className="text-4xl font-bold text-white mb-4">
               Stay Updated on Future Events
             </h2>
-            <p className="text-white mb-8 text-lg">
+            <p className="text-white mb-8 text-lg font">
               Be the first to know about upcoming Espresso events around the
               world
             </p>

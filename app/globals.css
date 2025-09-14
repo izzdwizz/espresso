@@ -90,6 +90,11 @@ button {
 footer {
   font-family: "Main", "PP Neue Montreal", sans-serif;
 }
+
+.future-events,
+.future-events p {
+  font-family: "Main", "PP Neue Montreal", sans-serif !important;
+}
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -217,5 +222,9 @@ button:active {
 }
 
 a.mapboxgl-ctrl-logo {
+  visibility: hidden;
+}
+
+.mapboxgl-ctrl-group:not(:empty) {
   visibility: hidden;
 }
