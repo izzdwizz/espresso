@@ -146,7 +146,9 @@ const Map: React.FC<MapProps> = ({
       {/* Toggle button */}
       <button
         onClick={onToggleProjection}
-        className="absolute bottom-4 left-4 text-espresso-primary bg-gray-600/70 px-4 py-3 rounded-[2rem] shadow-lg hover:bg-opacity-90 transition-all duration-500 font-medium transform"
+        className={`absolute bottom-4 left-4 text-espresso-primary ${
+          !isGlobe ? "bg-slate-700" : "bg-gray-600/70"
+        } px-4 py-3 rounded-[2rem] shadow-lg hover:bg-opacity-90 transition-all duration-500 font-medium transform`}
       >
         {isGlobe ? "Switch to Flat Map" : "Switch to Globe"}
       </button>

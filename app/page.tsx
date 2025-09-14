@@ -9,6 +9,7 @@ import EventCarousel from "@/components/EventCarousel";
 import { Event, EventFilter } from "@/types/events";
 import { events } from "@/data/events";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import Logo from "@/public/images/Logo";
 
 // Dynamically import Map to avoid SSR issues
 const Map = dynamic(() => import("@/components/Map"), {
@@ -55,7 +56,7 @@ export default function Home() {
       {/* Main Content */}
       <main className="relative">
         {/* Map Section */}
-        <section className="relative h-[92vh] w-full">
+        <section className="relative h-[92dvh] min-h-[90vh] w-full">
           <Map
             events={filteredEvents}
             selectedEvent={selectedEvent}
@@ -76,7 +77,7 @@ export default function Home() {
           <div className="absolute bottom-6 right-6 z-30 fade-in-delay-2">
             <a
               href="#past-events"
-              className="w-12 h-12 bg-transparent border border-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-500 animate-bounce hover:scale-110"
+              className="w-12 h-12 bg-slate-500/20 border border-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-500 animate-bounce hover:scale-110"
             >
               <svg
                 className="w-6 h-6 text-white"
@@ -150,12 +151,14 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="col-span-1 md:col-span-2">
-                <div className="flex items-center gap-3 mb-4">
+                {/* <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-espresso-primary rounded-full flex items-center justify-center">
                     <div className="w-4 h-4 bg-white rounded-full" />
                   </div>
                   <span className="text-xl font-bold">Espresso</span>
-                </div>
+                </div> */}
+
+                <Logo />
                 <p className="text-gray-400 mb-4">
                   The base layer for rollups. Real-time finality, crosschain
                   composability, and Ethereum compatibility.
