@@ -5,10 +5,11 @@ import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-espresso-primary shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="bg-espresso-secondary  shadow-lg">
+      <div className=" mx-auto py-1 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
+          <div className="md:block hidden"></div>
           <Logo />
 
           {/* Social Links */}

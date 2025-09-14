@@ -79,7 +79,7 @@ const EventCarousel: React.FC<EventCarouselProps> = ({
                     </span>
                   </div>
                 )}
-                <div className="absolute top-2 right-2">
+                {/* <div className="absolute top-2 right-2">
                   <span
                     className={`px-2 py-1 rounded-full text-xs font-medium ${
                       event.type === "future"
@@ -89,10 +89,10 @@ const EventCarousel: React.FC<EventCarouselProps> = ({
                   >
                     {event.type === "future" ? "Upcoming" : "Past"}
                   </span>
-                </div>
+                </div> */}
               </div>
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                <h3 className="font-semibold text-xl text-gray-900 mb-2 line-clamp-2">
                   {event.title}
                 </h3>
                 <p className="text-sm text-gray-600 mb-2">

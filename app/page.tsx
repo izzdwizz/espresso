@@ -55,7 +55,7 @@ export default function Home() {
       {/* Main Content */}
       <main className="relative">
         {/* Map Section */}
-        <section className="relative h-[80vh] w-full">
+        <section className="relative h-[92vh] w-full">
           <Map
             events={filteredEvents}
             selectedEvent={selectedEvent}
@@ -72,12 +72,33 @@ export default function Home() {
             onFilterChange={setFilter}
             onEventSelect={handleEventSelect}
           />
+
+          <div className="absolute bottom-6 right-6 z-30 fade-in-delay-2">
+            <a
+              href="#past-events"
+              className="w-12 h-12 bg-transparent border border-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-500 animate-bounce hover:scale-110"
+            >
+              <svg
+                className="w-6 h-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                />
+              </svg>
+            </a>
+          </div>
         </section>
 
         {/* Past Events Section */}
-        <section className="py-16 px-4 bg-gray-50">
+        <section className="py-16 px-4 bg-gray-50" id="past-events">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            <h2 className="text-5xl font-bold text-gray-900 mb-10 pb-4 text-center">
               Explore Past Events
             </h2>
             <EventCarousel
@@ -90,28 +111,42 @@ export default function Home() {
         {/* Sign Up Section */}
         <section className="py-16 px-4 bg-espresso-primary">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-4xl font-bold text-white mb-4">
               Stay Updated on Future Events
             </h2>
-            <p className="text-espresso-accent mb-8 text-lg">
+            <p className="text-white mb-8 text-lg">
               Be the first to know about upcoming Espresso events around the
               world
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg border-0 focus:ring-2 focus:ring-espresso-accent focus:outline-none"
-              />
-              <button className="bg-white text-espresso-primary px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-200">
-                Sign Up
-              </button>
+            <div className="relative max-w-md mx-auto">
+              <div className="relative bg-transparent border-[0.5px] border-[#fefefe] rounded-full px-6 py-4 flex items-center">
+                <input
+                  type="email"
+                  placeholder="Subscribe to our newsletter"
+                  className="flex-1 bg-transparent text-[#fefefe] placeholder-[#fefefe] focus:outline-none text-sm"
+                />
+                <button className="absolute right-1 w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-all duration-200 shadow-lg">
+                  <svg
+                    className="w-4 h-4 text-black"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className="bg-gray-900 text-white py-12 px-4">
+        <footer className="bg-gray-900 text-white py-12 px-4 footer">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="col-span-1 md:col-span-2">

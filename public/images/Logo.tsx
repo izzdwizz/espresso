@@ -6,7 +6,7 @@ const Logo = ({}) => {
       viewBox="0 0 1104 323"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="w-40 h-40"
+      className="md:w-40 md:h-40 w-20 h-20"
       color="currentColor"
     >
       <path
