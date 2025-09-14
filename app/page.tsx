@@ -98,7 +98,7 @@ export default function Home() {
         {/* Past Events Section */}
         <section className="py-16 px-4 bg-gray-50" id="past-events">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl font-bold text-gray-900 mb-10 pb-4 text-center">
+            <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary mb-10 pb-4 text-center">
               Explore Past Events
             </h2>
             <EventCarousel
