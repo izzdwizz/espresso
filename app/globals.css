@@ -1,26 +1,125 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Espresso Brand Colors */
+  --espresso-primary: #b67237; /* Warm brown */
+  --espresso-secondary: #000000; /* Black */
+  --espresso-accent: #d1e8f4; /* Light blue */
+  --espresso-text: #ffffff; /* White text */
+  --espresso-text-secondary: #948481; /* Muted brown */
+  --espresso-background: #b67237; /* Primary background */
+
+  --background: var(--espresso-background);
+  --foreground: var(--espresso-text);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-espresso-primary: var(--espresso-primary);
+  --color-espresso-secondary: var(--espresso-secondary);
+  --color-espresso-accent: var(--espresso-accent);
+  --color-espresso-text: var(--espresso-text);
+  --color-espresso-text-secondary: var(--espresso-text-secondary);
+  --color-espresso-background: var(--espresso-background);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--espresso-primary-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--espresso-text-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--espresso-text);
+}
+
+/* Hide scrollbar for carousel */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth animations */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: slideInFromTop 0.2s ease-out;
+}
+
+/* Hover pause for carousel */
+.carousel-container:hover .carousel-item {
+  animation-play-state: paused;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .scrollbar-hide {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color,
+    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+    backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Enhanced button hover effects */
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Card hover effects */
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+  visibility: hidden;
+}
+
+a.mapboxgl-ctrl-logo {
+  visibility: hidden;
 }

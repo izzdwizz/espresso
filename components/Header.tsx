@@ -1,0 +1,49 @@
+"use client";
+
+import Logo from "@/public/images/Logo";
+import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+
+const Header: React.FC = () => {
+  return (
+    <header className="bg-espresso-primary shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Logo />
+
+          {/* Social Links */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <a
+                href="https://discord.gg/espresso"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-espresso-text hover:text-espresso-text-secondary transition-colors"
+              >
+                <FaDiscord className="w-5 h-5" />
+              </a>
+              <a
+                href="https://twitter.com/espressosys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-espresso-text hover:text-espresso-text-secondary transition-colors"
+              >
+                <FaTwitter className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com/EspressoSystems"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-espresso-text hover:text-espresso-text-secondary transition-colors"
+              >
+                <FaGithub className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Header;
