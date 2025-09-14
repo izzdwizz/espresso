@@ -141,17 +141,17 @@ const Map: React.FC<MapProps> = ({
 
   return (
     <div className="relative w-full h-full">
-      <div ref={mapContainer} className="w-full h-full" />
+      <div ref={mapContainer} className="w-[110%] h-full" />
 
       {/* Toggle button */}
-      <button
+      {/* <button
         onClick={onToggleProjection}
-        className={`absolute bottom-4 left-4 text-espresso-primary ${
+        className={`absolute bottom-4 right-4 text-espresso-primary ${
           !isGlobe ? "bg-slate-700" : "bg-gray-600/70"
         } px-4 py-3 rounded-[2rem] shadow-lg hover:bg-opacity-90 transition-all duration-500 font-medium transform`}
       >
         {isGlobe ? "Switch to Flat Map" : "Switch to Globe"}
-      </button>
+      </button> */}
     </div>
   );
 };
