@@ -26,12 +26,12 @@ const Pin: React.FC<{ size?: number; time?: string }> = ({
       viewBox="0 0 24 24"
       style={{
         cursor: "pointer",
-        fill: time === "past" ? "#d00" : "rgba(31, 137, 236, 1)",
+        fill: time === "past" ? "#d00" : "#1cb7ff",
         stroke: "none",
         filter:
           time === "past"
             ? "drop-shadow(0 0 15px rgba(221, 0, 0, 0.8))"
-            : "drop-shadow(0 0 15px rgba(61, 139, 212, 0.8))",
+            : "drop-shadow(0 0 15px #97effb",
       }}
     >
       <path d={ICON} />
