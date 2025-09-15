@@ -4,7 +4,7 @@ export const events: Event[] = [
   // Past Events
   {
     id: "denver-2024",
-    title: "Espresso Denver Meetup",
+    title: "Espresso Denver Mega Meetup",
     location: "Denver",
     country: "USA",
     coordinates: [-104.9903, 39.7392],
