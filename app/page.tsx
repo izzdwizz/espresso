@@ -69,7 +69,7 @@ export default function Home() {
       >
         {/* Left Column - Header and Filters */}
         {!isExpanded && (
-          <div className="w-1/2 p-12 flex flex-col justify-between rounded-2xl bg-espresso-primary relative left-4 !z-[10]">
+          <div className="w-1/2 p-12 flex flex-col justify-between shadow-2xl rounded-2xl bg-espresso-primary relative left-4 !z-[10]">
             {/* Header Section */}
             <div>
               <Logo />
@@ -199,7 +199,7 @@ export default function Home() {
             mapStyle="mapbox://styles/mapbox/dark-v11"
             selectedEvent={selectedEvent}
             onEventSelect={handleEventSelect}
-            isGlobe={isGlobe}
+            isGlobe={!isGlobe}
             onToggleProjection={handleToggleProjection}
           />
 
