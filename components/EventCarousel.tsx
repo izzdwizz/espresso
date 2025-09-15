@@ -58,58 +58,100 @@ const EventCarousel: React.FC<EventCarouselProps> = ({
           transform: `translateX(-${currentIndex * cardWidth}px)`,
         }}
       >
-        {duplicatedEvents.map((event, index) => (
-          <div
-            key={`${event.id}-${index}`}
-            className="flex-shrink-0 w-72 sm:w-80 mr-4 sm:mr-6 cursor-pointer"
-            onClick={() => onEventSelect(event)}
-          >
-            <div className="bg-white rounded-lg shadow-md overflow-hidden card-hover transition-all duration-300">
-              <div className="h-48 bg-gray-200 relative">
-                {event.images.length > 0 ? (
-                  <img
-                    src={event.images[0].url}
-                    alt={event.images[0].alt}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full pb-4 bg-gradient-to-br from-espresso-primary to-espresso-primary-dark flex items-center justify-center">
-                    <span className="text-white text-lg font-semibold">
-                      {event.location}
+        {duplicatedEvents.map((event, index) => {
+          const variant = index % 3;
+          const bgCard = [
+            "bg-[#F4E8DC]",
+            "bg-espresso-primary",
+            "bg-[#6B3F23]",
+          ][variant];
+          const borderCard = [
+            "border border-[#E8DACC]",
+            "border border-[#c5894e]",
+            "border border-[#6B3F23]",
+          ][variant];
+          const titleColor = ["text-gray-900", "text-white", "text-white"][
+            variant
+          ];
+          const metaColor = ["text-gray-700", "text-white/80", "text-white/80"][
+            variant
+          ];
+          const accentColor = [
+            "text-espresso-primary",
+            "text-espresso-accent",
+            "text-espresso-accent",
+          ][variant];
+          const imageOverlay = [
+            "bg-black/0",
+            "bg-espresso-primary/25",
+            "bg-black/10",
+          ][variant];
+
+          return (
+            <div
+              key={`${event.id}-${index}`}
+              className="flex-shrink-0 w-72 sm:w-80 mr-4 sm:mr-6 cursor-pointer group"
+              onClick={() => onEventSelect(event)}
+            >
+              <div
+                className={`${bgCard} ${borderCard} rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl`}
+              >
+                <div className="h-48 relative">
+                  {event.images.length > 0 ? (
+                    <img
+                      src={event.images[0]?.url}
+                      alt={event.images[0]?.alt}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-white text-lg font-semibold">
+                        {event.location}
+                      </span>
+                    </div>
+                  )}
+                  <div className={`absolute inset-0 ${imageOverlay}`} />
+                </div>
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <h3
+                      className={`font-semibold text-xl ${titleColor} line-clamp-2`}
+                    >
+                      {event.title}
+                    </h3>
+                    <span
+                      className={`inline-flex items-center justify-center w-7 h-7 rounded-full border ${titleColor} border-current opacity-80 group-hover:opacity-100 transition-opacity`}
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M7 17L17 7" />
+                        <path d="M7 7h10v10" />
+                      </svg>
                     </span>
                   </div>
-                )}
-                {/* <div className="absolute top-2 right-2">
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      event.type === "future"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}
-                  >
-                    {event.type === "future" ? "Upcoming" : "Past"}
-                  </span>
-                </div> */}
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-xl text-gray-900 mb-2 line-clamp-2">
-                  {event.title}
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  {event.location}, {event.country}
-                </p>
-                <p className="text-sm text-espresso-primary font-medium">
-                  {event.date}
-                </p>
-                {event.attendees && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    {event.attendees} attendees
+                  <p className={`text-sm ${metaColor} mb-2`}>
+                    {event.location}, {event.country}
                   </p>
-                )}
+                  <p className={`text-sm ${accentColor} font-medium`}>
+                    {event.date}
+                  </p>
+                  {event.attendees && (
+                    <p className={`text-xs ${metaColor} mt-1`}>
+                      {event.attendees} attendees
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Navigation dots */}

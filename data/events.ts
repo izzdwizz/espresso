@@ -84,7 +84,7 @@ export const events: Event[] = [
   },
   {
     id: "cannes-2024",
-    title: "Espresso Cannes Festival",
+    title: "Espresso Cannes Super Festival",
     location: "Cannes",
     country: "France",
     coordinates: [7.0174, 43.5528],
