@@ -1,13 +1,13 @@
 import React from "react";
 
-const Logo = ({}) => {
+const Logo = ({ fill, className }: { fill: string; className?: string }) => {
   return (
     <svg
       viewBox="0 0 1104 323"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="md:w-40 md:h-20 w-20 h-10"
-      color="currentColor"
+      className={`${className ? className : "md:w-40 md:h-20 w-20 h-10"}`}
+      color={fill}
     >
       <path
         d="M495.403 94V111.2H432.003V152.6H492.603V169.8H432.003V212.8H495.403V230H413.203V94H495.403Z"

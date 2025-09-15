@@ -8,6 +8,7 @@ import { Event, EventFilter } from "@/types/events";
 import { events } from "@/data/events";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 import { FiMaximize2 } from "react-icons/fi";
+import { motion } from "framer-motion";
 import Logo from "@/public/images/Logo";
 
 // Dynamically import Map to avoid SSR issues
@@ -72,7 +73,7 @@ export default function Home() {
           <div className="w-1/2 p-12 flex flex-col justify-between shadow-2xl rounded-2xl bg-espresso-primary relative left-4 !z-[10]">
             {/* Header Section */}
             <div>
-              <Logo />
+              <Logo fill="" className="" />
               <h1 className="text-6xl font-bold text-white mt-8 mb-8 leading-tight">
                 The Espresso Event Map
               </h1>
@@ -112,7 +113,7 @@ export default function Home() {
                       type: e.target.value as "all" | "past" | "future",
                     })
                   }
-                  className="w-full bg-transparent text-white border-l-2 border-b-2 border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
+                  className="w-full bg-transparent text-white border-l-[0.5px] border-b-[0.5px] border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
                 >
                   <option
                     value="all"
@@ -144,7 +145,7 @@ export default function Home() {
                       country: e.target.value || undefined,
                     })
                   }
-                  className="w-full bg-transparent text-white border-l-2 border-b-2 border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
+                  className="w-full bg-transparent text-white border-l-[0.5px] border-b-[0.5px] border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
                 >
                   <option value="" className="bg-espresso-primary text-white">
                     All Countries
@@ -168,7 +169,7 @@ export default function Home() {
                     const event = events.find((ev) => ev.id === e.target.value);
                     if (event) handleEventSelect(event);
                   }}
-                  className="w-full bg-transparent text-white border-l-2 border-b-2 border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
+                  className="w-full bg-transparent text-white border-l-[0.5px] border-b-[0.5px] border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
                 >
                   <option value="" className="bg-espresso-primary text-white">
                     Select an Event
@@ -188,11 +189,15 @@ export default function Home() {
           </div>
         )}
 
-        {/* Right Column - Map */}
-        <div
+        {/* Right Column - Map (fade in from left) */}
+
+        <motion.div
           className={`${
             isExpanded ? "w-full" : "w-1/2"
           } relative transition-all duration-500 !rounded-br-lg !rounded-tr-lg overflow-hidden relative right-4`}
+          initial={{ x: -505, opacity: 1 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: "easeIn" }}
         >
           <Map
             events={filteredEvents}
@@ -219,7 +224,7 @@ export default function Home() {
           >
             {isGlobe ? "Flat Map" : "Globe View"}
           </button>
-        </div>
+        </motion.div>
       </div>
 
       {/* Fullscreen Map Modal */}
@@ -228,7 +233,8 @@ export default function Home() {
           <div className="relative w-full h-full">
             <Map
               events={filteredEvents}
-              mapStyle="mapbox://styles/mapbox/dark-v11"
+              // mapStyle="mapbox://styles/mapbox/dark-v11"
+              mapStyle="mapbox://styles/mapbox/dark-v9"
               selectedEvent={selectedEvent}
               onEventSelect={handleEventSelect}
               isGlobe={false}
@@ -245,10 +251,17 @@ export default function Home() {
         </div>
       )}
 
-      {/* Past Events Section */}
-      <section className="py-16 px-4 bg-gray-50" id="past-events">
+      {/* Past Events Section (fade up on enter) */}
+      <motion.section
+        className="py-16 px-4 bg-gray-50"
+        id="past-events"
+        initial={{ y: 60, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary mb-10 pb-4 text-center">
+          <h2 className="text-5xl font-bold w-full text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary mb-10 pb-4 text-center">
             Explore Past Events
           </h2>
           <EventCarousel
@@ -256,10 +269,16 @@ export default function Home() {
             onEventSelect={handleEventSelect}
           />
         </div>
-      </section>
+      </motion.section>
 
-      {/* Sign Up Section */}
-      <section className="py-16 px-4 bg-espresso-primary">
+      {/* Sign Up Section (fade up on enter) */}
+      <motion.section
+        className="py-16 px-4 bg-espresso-primary"
+        initial={{ y: 60, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         <div className="max-w-4xl mx-auto text-center future-events">
           <h2 className="text-4xl font-bold text-white mb-4">
             Stay Updated on Future Events
@@ -292,91 +311,94 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4 footer">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <Logo />
-              <p className="text-gray-400 mb-4">
-                The base layer for rollups. Real-time finality, crosschain
-                composability, and Ethereum compatibility.
-              </p>
-              <div className="flex space-x-4">
-                <a
-                  href="https://discord.gg/espresso"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
+      {/* Footer (rounded container, two rows) - fade up on enter */}
+      <motion.footer
+        className="py-8"
+        initial={{ y: 80, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: true, amount: 0.2 }}
+      >
+        <div className="w-full mx-auto rounded-3xl bg-[#3e1f1a] text-white p-6 sm:p-8">
+          {/* Row 1: three columns spaced-between */}
+          <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-[#fff7ef66]">
+            {/* Left: CTA */}
+            <div className="w-full">
+              <button
+                className="inline-flex items-center gap-2 bg-black text-white px-5 py-3 rounded-full hover:bg-gray-800 transition-colors"
+                aria-label="Build on Espresso"
+              >
+                Build on Espresso
+                <svg
+                  className="w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <FaDiscord className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://twitter.com/espressosys"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <FaTwitter className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://github.com/EspressoSystems"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  <FaGithub className="w-5 h-5" />
-                </a>
-              </div>
+                  <path d="M7 17L17 7" />
+                  <path d="M7 7h10v10" />
+                </svg>
+              </button>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">Events</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Past Events
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Upcoming Events
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Event Calendar
-                  </a>
-                </li>
-              </ul>
+            {/* Middle: social links */}
+            <div className="flex w-full justify-center items-center gap-6">
+              <a
+                href="https://discord.gg/espresso"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 hover:text-white transition-colors"
+                aria-label="Discord"
+              >
+                <FaDiscord className="w-5 h-5" />
+              </a>
+              <a
+                href="https://twitter.com/espressosys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 hover:text-white transition-colors"
+                aria-label="Twitter"
+              >
+                <FaTwitter className="w-5 h-5" />
+              </a>
+              <a
+                href="https://github.com/EspressoSystems"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/80 hover:text-white transition-colors"
+                aria-label="GitHub"
+              >
+                <FaGithub className="w-5 h-5" />
+              </a>
             </div>
-            <div>
-              <h3 className="font-semibold mb-4">Resources</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Developer Tools
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Community
-                  </a>
-                </li>
-              </ul>
+
+            {/* Right: other links (dummy) */}
+            <div className="hidden w-full md:flex items-center gap-6 text-white/80">
+              <a href="#" className="hover:text-white transition-colors">
+                Careers
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                HotShot Paper
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                Espresso Docs
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                Privacy Policy
+              </a>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Espresso Systems. All rights reserved.</p>
+
+          {/* Row 2: centered logo */}
+          <div className="py-16 flex items-center justify-center">
+            <Logo fill="#dd9e67" className="w-60 h-40 md:w-56 md:h-56" />
           </div>
         </div>
-      </footer>
+      </motion.footer>
 
       {/* Event Modal */}
       <EventModal

@@ -9,10 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
     "@types/mapbox-gl": "^3.4.1",
+    "framer-motion": "^12.23.12",
     "mapbox-gl": "^3.15.0",
     "next": "15.5.3",
     "react": "19.1.0",
+    "react-awesome-reveal": "^4.3.1",
     "react-dom": "19.1.0",
     "react-icons": "^5.5.0",
     "react-map-gl": "^7.1.7",
