@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import mapboxgl from "mapbox-gl";
+import { useMemo, useState, useEffect } from "react";
+import MapGL, { Marker, type ViewStateChangeEvent } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Event } from "@/types/events";
 
@@ -11,146 +11,97 @@ interface MapProps {
   onEventSelect: (event: Event) => void;
   isGlobe: boolean;
   onToggleProjection: () => void;
+  mapStyle?: string;
 }
+
+const Pin: React.FC<{ size?: number }> = ({ size = 20 }) => {
+  const ICON =
+    "M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,4.5,2,10c0,2,0.6,3.9,1.6,5.4c0,0.1,0.1,0.2,0.2,0.3  c0,0,0.1,0.1,0.1,0.2c0.2,0.3,0.4,0.6,0.7,0.9c2.6,3.1,7.4,7.6,7.4,7.6s4.8-4.5,7.4-7.5c0.2-0.3,0.5-0.6,0.7-0.9  C20.1,15.8,20.2,15.8,20.2,15.7z";
+  return (
+    <svg
+      height={size}
+      viewBox="0 0 24 24"
+      style={{
+        cursor: "pointer",
+        fill: "#d00",
+        stroke: "none",
+        filter: "drop-shadow(0 0 15px rgba(221, 0, 0, 0.8))",
+      }}
+    >
+      <path d={ICON} />
+    </svg>
+  );
+};
 
 const Map: React.FC<MapProps> = ({
   events,
   selectedEvent,
   onEventSelect,
   isGlobe,
-  onToggleProjection,
+  // onToggleProjection,
+  mapStyle,
 }) => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const markers = useRef<mapboxgl.Marker[]>([]);
+  const [viewState, setViewState] = useState({
+    longitude: 0,
+    latitude: 20,
+    zoom: 1.3,
+    bearing: 0,
+    pitch: 0,
+  });
 
+  // Fly to event when selected
   useEffect(() => {
-    if (!mapContainer.current) return;
-
-    // Set Mapbox access token
-    mapboxgl.accessToken =
-      process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ||
-      "pk.eyJ1IjoiemVkZWYwODA4IiwiYSI6ImNtZmdvMnpqMjAyd20yaXNheHQ3b29hNGkifQ.KEhyXFZiR5t2ap1vwdTEnA";
-
-    // Initialize map
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
-      center: [0, 20],
-      zoom: 1.3,
-      projection: isGlobe ? "globe" : "mercator",
-    });
-
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl());
-
-    // Add fog effect for globe view
-    map.current.on("style.load", () => {
-      if (map.current) {
-        map.current.setFog({});
-      }
-    });
-
-    return () => {
-      if (map.current) {
-        map.current.remove();
-      }
-    };
-  }, []);
-
-  // Update projection when isGlobe changes
-  useEffect(() => {
-    if (map.current) {
-      map.current.setProjection(isGlobe ? "globe" : "mercator");
-    }
-  }, [isGlobe]);
-
-  // Add/update markers when events change
-  useEffect(() => {
-    if (!map.current) return;
-
-    // Clear existing markers
-    markers.current.forEach((marker) => marker.remove());
-    markers.current = [];
-
-    // Add new markers
-    events.forEach((event) => {
-      const markerColor = event.type === "future" ? "#b67237" : "#948481";
-
-      const marker = new mapboxgl.Marker({
-        color: markerColor,
-        scale: 1.2,
-      })
-        .setLngLat(event.coordinates)
-        .addTo(map.current!);
-
-      // Create popup content
-      const popupContent = `
-        <div class="p-3 min-w-[200px]">
-          <h3 class="font-bold text-lg text-gray-800 mb-2">${event.title}</h3>
-          <p class="text-sm text-gray-600 mb-2">${event.location}, ${event.country}</p>
-          <p class="text-sm text-gray-500 mb-3">${event.date}</p>
-          <button 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors"
-            onclick="window.selectEvent('${event.id}')"
-          >
-            View Details
-          </button>
-        </div>
-      `;
-
-      const popup = new mapboxgl.Popup({
-        offset: 25,
-        closeButton: false,
-      }).setHTML(popupContent);
-
-      marker.setPopup(popup);
-      markers.current.push(marker);
-
-      // Add click handler
-      marker.getElement().addEventListener("click", () => {
-        onEventSelect(event);
-      });
-    });
-
-    // Add global function for popup button
-    (window as any).selectEvent = (eventId: string) => {
-      const event = events.find((e) => e.id === eventId);
-      if (event) {
-        onEventSelect(event);
-      }
-    };
-
-    return () => {
-      (window as any).selectEvent = undefined;
-    };
-  }, [events, onEventSelect]);
-
-  // Fly to selected event
-  useEffect(() => {
-    if (map.current && selectedEvent) {
-      map.current.flyTo({
-        center: selectedEvent.coordinates,
-        zoom: 6,
-        essential: true,
-        duration: 2000,
-        easing: (t) => t * (2 - t), // ease-out easing
-      });
-    }
+    if (!selectedEvent) return;
+    setViewState((vs) => ({
+      ...vs,
+      longitude: selectedEvent.coordinates[0],
+      latitude: selectedEvent.coordinates[1],
+      zoom: 6,
+    }));
   }, [selectedEvent]);
+
+  const pins = useMemo(
+    () =>
+      events.map((ev) => (
+        <Marker
+          key={ev.id}
+          longitude={ev.coordinates[0]}
+          latitude={ev.coordinates[1]}
+          anchor="bottom"
+          onClick={(e: any) => {
+            e.originalEvent.stopPropagation();
+            onEventSelect(ev);
+          }}
+        >
+          <Pin />
+        </Marker>
+      )),
+    [events, onEventSelect]
+  );
 
   return (
     <div className="relative w-full h-full">
-      <div ref={mapContainer} className="w-[110%] h-full" />
+      <MapGL
+        {...viewState}
+        onMove={(evt: ViewStateChangeEvent) => setViewState(evt.viewState)}
+        mapStyle={mapStyle || "mapbox://styles/mapbox/dark-v11"}
+        projection={{ name: isGlobe ? "globe" : "mercator" }}
+        style={{ width: "100%", height: "100%" }}
+        mapboxAccessToken={
+          process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN ||
+          "pk.eyJ1IjoiemVkZWYwODA4IiwiYSI6ImNtZmdvMnpqMjAyd20yaXNheHQ3b29hNGkifQ.KEhyXFZiR5t2ap1vwdTEnA"
+        }
+        attributionControl={false}
+      >
+        {pins}
+      </MapGL>
 
-      {/* Toggle button */}
       {/* <button
         onClick={onToggleProjection}
-        className={`absolute bottom-4 right-4 text-espresso-primary ${
-          !isGlobe ? "bg-slate-700" : "bg-gray-600/70"
-        } px-4 py-3 rounded-[2rem] shadow-lg hover:bg-opacity-90 transition-all duration-500 font-medium transform`}
+        aria-label="Toggle projection"
+        className="absolute bottom-4 right-4 z-10 bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg hover:bg-white/30 transition-all duration-200 text-xs"
       >
-        {isGlobe ? "Switch to Flat Map" : "Switch to Globe"}
+        {isGlobe ? "Flat Map" : "Globe View"}
       </button> */}
     </div>
   );

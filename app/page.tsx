@@ -7,6 +7,7 @@ import EventCarousel from "@/components/EventCarousel";
 import { Event, EventFilter } from "@/types/events";
 import { events } from "@/data/events";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import { FiMaximize2 } from "react-icons/fi";
 import Logo from "@/public/images/Logo";
 
 // Dynamically import Map to avoid SSR issues
@@ -24,6 +25,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGlobe, setIsGlobe] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isMapFullscreen, setIsMapFullscreen] = useState(false);
   const [filter, setFilter] = useState<EventFilter>({ type: "all" });
 
   // Filter events based on current filter
@@ -50,6 +52,9 @@ export default function Home() {
   const handleExpand = () => {
     setIsExpanded(!isExpanded);
   };
+
+  const openFullscreenMap = () => setIsMapFullscreen(true);
+  const closeFullscreenMap = () => setIsMapFullscreen(false);
 
   // Get unique countries for filter dropdown
   const countries = Array.from(new Set(events.map((event) => event.country)));
@@ -191,18 +196,20 @@ export default function Home() {
         >
           <Map
             events={filteredEvents}
+            mapStyle="mapbox://styles/mapbox/dark-v11"
             selectedEvent={selectedEvent}
             onEventSelect={handleEventSelect}
             isGlobe={isGlobe}
             onToggleProjection={handleToggleProjection}
           />
 
-          {/* Expand Button */}
+          {/* Fullscreen Icon Button */}
           <button
-            onClick={handleExpand}
-            className="absolute top-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-200"
+            onClick={openFullscreenMap}
+            aria-label="Open fullscreen map"
+            className="absolute top-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-all duration-200"
           >
-            {isExpanded ? "Collapse" : "Expand"}
+            <FiMaximize2 className="w-5 h-5" />
           </button>
 
           {/* Globe Toggle Button */}
@@ -214,6 +221,29 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {/* Fullscreen Map Modal */}
+      {isMapFullscreen && (
+        <div className="fixed inset-0 z-50 bg-black">
+          <div className="relative w-full h-full">
+            <Map
+              events={filteredEvents}
+              mapStyle="mapbox://styles/mapbox/dark-v11"
+              selectedEvent={selectedEvent}
+              onEventSelect={handleEventSelect}
+              isGlobe={false}
+              onToggleProjection={handleToggleProjection}
+            />
+            <button
+              onClick={closeFullscreenMap}
+              aria-label="Close fullscreen map"
+              className="absolute top-6 right-6 z-50 bg-white/20 backdrop-blur-sm text-white px-3 py-2 rounded-lg hover:bg-white/30 transition-all duration-200 text-xs"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Past Events Section */}
       <section className="py-16 px-4 bg-gray-50" id="past-events">
