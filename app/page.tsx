@@ -6,7 +6,14 @@ import EventModal from "@/components/EventModal";
 import EventCarousel from "@/components/EventCarousel";
 import { Event, EventFilter } from "@/types/events";
 import { events } from "@/data/events";
-import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import {
+  FaDiscord,
+  FaTwitter,
+  FaGithub,
+  FaSearch,
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
 import { FiMaximize2 } from "react-icons/fi";
 import { motion } from "framer-motion";
 import Logo from "@/public/images/Logo";
@@ -27,6 +34,7 @@ export default function Home() {
   const [isGlobe, setIsGlobe] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isMapFullscreen, setIsMapFullscreen] = useState(false);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [filter, setFilter] = useState<EventFilter>({ type: "all" });
 
   // Filter events based on current filter
@@ -56,6 +64,8 @@ export default function Home() {
 
   const openFullscreenMap = () => setIsMapFullscreen(true);
   const closeFullscreenMap = () => setIsMapFullscreen(false);
+  const openMobileFilter = () => setIsMobileFilterOpen(true);
+  const closeMobileFilter = () => setIsMobileFilterOpen(false);
 
   // Get unique countries for filter dropdown based on selected event type
   const countries = Array.from(
@@ -70,7 +80,7 @@ export default function Home() {
   );
 
   return (
-    <div className="min-h-screen bg-white p-4">
+    <div className="min-h-screen bg-white p-2 md:p-4">
       {/* Main Layout */}
       <div
         className={`flex h-screen transition-all duration-500 ${
@@ -79,7 +89,7 @@ export default function Home() {
       >
         {/* Left Column - Header and Filters */}
         {!isExpanded && (
-          <div className="w-1/2 p-12 flex flex-col justify-between shadow-2xl rounded-2xl bg-espresso-primary relative left-4 !z-[10]">
+          <div className="md:block hidden w-1/2 p-12 flex flex-col justify-between shadow-2xl rounded-2xl bg-espresso-primary relative left-4 !z-[10]">
             {/* Header Section */}
             <div>
               <Logo fill="" className="" />
@@ -206,8 +216,8 @@ export default function Home() {
 
         <motion.div
           className={`${
-            isExpanded ? "w-full" : "w-1/2"
-          } relative transition-all duration-500 !rounded-br-lg !rounded-tr-lg overflow-hidden relative right-4`}
+            isExpanded ? "w-full" : "w-full md:w-1/2"
+          } relative transition-all duration-500 !rounded-br-lg !rounded-tr-lg overflow-hidden relative md:right-4`}
           initial={{ x: -505, opacity: 1 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1, ease: "easeIn" }}
@@ -221,11 +231,20 @@ export default function Home() {
             onToggleProjection={handleToggleProjection}
           />
 
+          {/* Mobile Search Button */}
+          <button
+            onClick={openMobileFilter}
+            className="absolute md:hidden top-6 left-6 z-30 bg-espresso-primary/40 text-white px-4 py-2 rounded-lg hover:bg-espresso-primary/90 transition-all duration-200 flex items-center gap-2 shadow-lg"
+          >
+            {/* <FaSearch className="w-4 h-4" /> */}
+            <span className="text-sm font-medium">Find Event</span>
+          </button>
+
           {/* Fullscreen Icon Button */}
           <button
             onClick={openFullscreenMap}
             aria-label="Open fullscreen map"
-            className="absolute top-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-all duration-200"
+            className="absolute hidden md:block top-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-all duration-200"
           >
             <FiMaximize2 className="w-5 h-5" />
           </button>
@@ -233,10 +252,29 @@ export default function Home() {
           {/* Globe Toggle Button */}
           <button
             onClick={handleToggleProjection}
-            className="absolute bottom-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-200"
+            className="absolute hidden md:block bottom-6  right-6 z-30 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-200"
           >
             {!isGlobe ? "Flat Map" : "Globe View"}
           </button>
+
+          {/* Bouncing Arrow */}
+          <a
+            href="#past-events"
+            className="absolute block md:hidden bottom-6 animate-bounce duration-300 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full border border-white/50 flex items-center justify-center z-30"
+          >
+            <motion.div
+              animate={{
+                y: [0, 8, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            >
+              <FaChevronDown className="w-4 h-4 text-white" />
+            </motion.div>
+          </a>
         </motion.div>
       </div>
 
@@ -328,7 +366,7 @@ export default function Home() {
 
       {/* Footer (rounded container, two rows) - fade up on enter */}
       <motion.footer
-        className="py-8"
+        className="py-8 relative"
         initial={{ y: 80, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
@@ -340,7 +378,7 @@ export default function Home() {
             {/* Left: CTA */}
             <div className="w-full">
               <button
-                className="inline-flex items-center gap-2 bg-black text-white px-5 py-3 rounded-full hover:bg-gray-800 transition-colors"
+                className="inline-flex items-center whitespace-nowrap gap-2 bg-black text-white px-5 py-3 rounded-full hover:bg-gray-800 transition-colors"
                 aria-label="Build on Espresso"
               >
                 Build on Espresso
@@ -411,7 +449,172 @@ export default function Home() {
             <Logo fill="#dd9e67" className="w-60 h-40 md:w-56 md:h-56" />
           </div>
         </div>
+
+        <a
+          href="#"
+          className="absolute block md:hidden bottom-12 animate-bounce duration-300 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full border border-[#dd9e67]/50 flex items-center justify-center z-30"
+        >
+          <motion.div
+            animate={{
+              y: [0, 8, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          >
+            <FaChevronUp className="w-4 h-4 text-[#dd9e67]" />
+          </motion.div>
+        </a>
       </motion.footer>
+
+      {/* Mobile Filter Modal */}
+      {isMobileFilterOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={closeMobileFilter}
+          />
+
+          {/* Modal Content */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 shadow-2xl"
+          >
+            {/* Close Button */}
+            <button
+              onClick={closeMobileFilter}
+              className="absolute top-4 right-4 text-white/70 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            {/* Modal Header */}
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-white mb-2">
+                Find Events
+              </h2>
+              <p className="text-white/70 text-sm">
+                Filter events by type and location
+              </p>
+            </div>
+
+            {/* Filter Inputs */}
+            <div className="space-y-4">
+              <div className="relative">
+                <select
+                  value={filter.type}
+                  onChange={(e) => {
+                    const newType = e.target.value as "all" | "past" | "future";
+                    setFilter({
+                      ...filter,
+                      type: newType,
+                      country: undefined, // Reset country filter when type changes
+                    });
+                  }}
+                  className="w-full bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 text-lg"
+                >
+                  <option
+                    value="all"
+                    className="bg-espresso-primary text-white"
+                  >
+                    All Events
+                  </option>
+                  <option
+                    value="past"
+                    className="bg-espresso-primary text-white"
+                  >
+                    Past Events
+                  </option>
+                  <option
+                    value="future"
+                    className="bg-espresso-primary text-white"
+                  >
+                    Future Events
+                  </option>
+                </select>
+              </div>
+
+              <div className="relative">
+                <select
+                  value={filter.country || ""}
+                  onChange={(e) =>
+                    setFilter({
+                      ...filter,
+                      country: e.target.value || undefined,
+                    })
+                  }
+                  className="w-full bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 text-lg"
+                >
+                  <option value="" className="bg-espresso-primary text-white">
+                    All Countries
+                  </option>
+                  {countries.map((country) => (
+                    <option
+                      key={country}
+                      value={country}
+                      className="bg-espresso-primary text-white"
+                    >
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="relative">
+                <select
+                  value={selectedEvent?.id || ""}
+                  onChange={(e) => {
+                    const event = events.find((ev) => ev.id === e.target.value);
+                    if (event) {
+                      handleEventSelect(event);
+                      closeMobileFilter(); // Close modal when event is selected
+                    }
+                  }}
+                  className="w-full bg-white/10 backdrop-blur-sm text-white border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 text-lg"
+                >
+                  <option value="" className="bg-espresso-primary text-white">
+                    Select an Event
+                  </option>
+                  {filteredEvents.map((event) => (
+                    <option
+                      key={event.id}
+                      value={event.id}
+                      className="bg-espresso-primary text-white"
+                    >
+                      {event.title} - {event.country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Apply Button */}
+            {/* <button
+              onClick={closeMobileFilter}
+              className="w-full mt-6 bg-white/20 hover:bg-white/30 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 backdrop-blur-sm border border-white/20"
+            >
+              Apply Filters
+            </button> */}
+          </motion.div>
+        </div>
+      )}
 
       {/* Event Modal */}
       <EventModal
