@@ -273,7 +273,7 @@ export default function Home() {
         transition={{ duration: 0.7, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.2 }}
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl py-12 mx-auto">
           <h2 className="text-5xl font-bold w-full text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary mb-10 pb-4 text-center">
             Explore Past Events
           </h2>
