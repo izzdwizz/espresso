@@ -222,7 +222,7 @@ export default function Home() {
             onClick={handleToggleProjection}
             className="absolute bottom-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-200"
           >
-            {isGlobe ? "Flat Map" : "Globe View"}
+            {!isGlobe ? "Flat Map" : "Globe View"}
           </button>
         </motion.div>
       </div>

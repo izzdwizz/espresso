@@ -94,7 +94,7 @@ const EventCarousel: React.FC<EventCarouselProps> = ({
               onClick={() => onEventSelect(event)}
             >
               <div
-                className={`${bgCard} ${borderCard} rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl`}
+                className={`${bgCard} ${borderCard} rounded-2xl shadow-lg overflow-hidden min-h-64 md:min-h-96  transition-all duration-300 hover:shadow-xl`}
               >
                 <div className="h-48 relative">
                   {event.images.length > 0 ? (
@@ -120,7 +120,7 @@ const EventCarousel: React.FC<EventCarouselProps> = ({
                       {event.title}
                     </h3>
                     <span
-                      className={`inline-flex items-center justify-center w-7 h-7 rounded-full border ${titleColor} border-current opacity-80 group-hover:opacity-100 transition-opacity`}
+                      className={`inline-flex items-center justify-center w-max-content min-w-7 h-7 rounded-full border ${titleColor} border-current opacity-80 group-hover:opacity-100 transition-opacity`}
                     >
                       <svg
                         className="w-3.5 h-3.5"

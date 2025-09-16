@@ -198,16 +198,19 @@ const EventModal: React.FC<EventModalProps> = ({ event, isOpen, onClose }) => {
             )}
 
             {/* Event Type Badge */}
-            <div className="flex items-center gap-2">
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
+            <div className="flex items-center gap-2 ">
+              <a
+                href={event.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`px-3 py-2 rounded-full text-sm font-medium ${
                   event.type === "future"
-                    ? "bg-green-100 text-green-800"
+                    ? "bg-black text-white"
                     : "bg-gray-100 text-gray-800"
-                }`}
+                } `}
               >
-                {event.type === "future" ? "Upcoming Event" : "Past Event"}
-              </span>
+                {event.type === "future" ? "Register" : "View Recap"}
+              </a>
             </div>
           </div>
         </div>

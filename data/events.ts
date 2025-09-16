@@ -4,7 +4,7 @@ export const events: Event[] = [
   // Past Events
   {
     id: "denver-2024",
-    title: "Espresso Denver Mega Meetup",
+    title: "Composability Day ETHDenver",
     location: "Denver",
     country: "USA",
     coordinates: [-104.9903, 39.7392],
@@ -14,7 +14,7 @@ export const events: Event[] = [
       "An exciting gathering of blockchain developers and enthusiasts in the Mile High City, exploring the future of rollup technology.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-composD.png",
         alt: "Denver meetup attendees",
         caption: "Networking session at Denver event",
       },
@@ -30,11 +30,12 @@ export const events: Event[] = [
       "Live demo of crosschain composability",
     ],
     venue: "Denver Convention Center",
-    attendees: 150,
+    attendees: 575,
+    link: "https://luma.com/o2446knk",
   },
   {
     id: "san-francisco-2024",
-    title: "Espresso San Francisco Summit",
+    title: "Ethereum 10Y Anniversary San Francisco",
     location: "San Francisco",
     country: "USA",
     coordinates: [-122.4194, 37.7749],
@@ -44,7 +45,7 @@ export const events: Event[] = [
       "A comprehensive summit featuring the latest developments in Espresso technology and its impact on the blockchain ecosystem.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-ethSF.png",
         alt: "San Francisco summit stage",
         caption: "Main stage presentation",
       },
@@ -55,11 +56,12 @@ export const events: Event[] = [
       "Workshop on building with Espresso",
     ],
     venue: "Moscone Center",
-    attendees: 300,
+    attendees: 971,
+    link: "https://luma.com/ethereum-10y-sanfrancisco",
   },
   {
     id: "new-york-2024",
-    title: "Espresso New York Conference",
+    title: "Espresso Brews Permissionless",
     location: "New York",
     country: "USA",
     coordinates: [-74.006, 40.7128],
@@ -69,7 +71,7 @@ export const events: Event[] = [
       "The financial capital of the world hosted our largest event, showcasing Espresso's potential in traditional finance integration.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-nyc.webp",
         alt: "New York conference hall",
         caption: "Main conference hall",
       },
@@ -80,11 +82,12 @@ export const events: Event[] = [
       "Enterprise adoption case studies",
     ],
     venue: "Javits Center",
-    attendees: 500,
+    attendees: 300,
+    link: "https://luma.com/yb17pn9g",
   },
   {
     id: "cannes-2024",
-    title: "Espresso Cannes Super Festival",
+    title: "Ethereum United: Pétanque",
     location: "Cannes",
     country: "France",
     coordinates: [7.0174, 43.5528],
@@ -94,7 +97,7 @@ export const events: Event[] = [
       "A glamorous event on the French Riviera, combining technology innovation with the artistic spirit of Cannes.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-cannes.png",
         alt: "Cannes festival venue",
         caption: "Beachside venue in Cannes",
       },
@@ -104,12 +107,13 @@ export const events: Event[] = [
       "European developer community meetup",
       "Innovation showcase",
     ],
-    venue: "Palais des Festivals",
-    attendees: 200,
+    venue: "Allée de la Liberté Charles de Gaulle",
+    attendees: 701,
+    link: "https://luma.com/h0lmohx9",
   },
   {
     id: "bangkok-2024",
-    title: "Espresso Bangkok Workshop",
+    title: "Sequencing Day",
     location: "Bangkok",
     country: "Thailand",
     coordinates: [100.5018, 13.7563],
@@ -119,7 +123,7 @@ export const events: Event[] = [
       "An immersive workshop in Southeast Asia, focusing on practical implementation and developer education.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-sqdBangK.png",
         alt: "Bangkok workshop session",
         caption: "Hands-on workshop session",
       },
@@ -129,12 +133,13 @@ export const events: Event[] = [
       "Southeast Asian developer community building",
       "Local ecosystem partnerships",
     ],
-    venue: "Bangkok International Trade & Exhibition Centre",
-    attendees: 120,
+    venue: "Krung Thep Maha Nakhon",
+    attendees: 2237,
+    link: "https://luma.com/sequencing_day",
   },
   {
     id: "brussels-2024",
-    title: "Espresso Brussels Policy Forum",
+    title: "Ethereum United: EURO 2024 Semi-Finals Pub Nights",
     location: "Brussels",
     country: "Belgium",
     coordinates: [4.3517, 50.8503],
@@ -144,7 +149,7 @@ export const events: Event[] = [
       "A policy-focused event in the heart of Europe, addressing regulatory frameworks and compliance in the blockchain space.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-ethBruss.png",
         alt: "Brussels policy forum",
         caption: "Policy discussion panel",
       },
@@ -155,11 +160,12 @@ export const events: Event[] = [
       "Policy maker engagement",
     ],
     venue: "European Parliament",
-    attendees: 80,
+    attendees: 1101,
+    link: "https://luma.com/ud8p6oww",
   },
   {
     id: "berlin-2024",
-    title: "Espresso Berlin Tech Meetup",
+    title: "Crypto x Badminton",
     location: "Berlin",
     country: "Germany",
     coordinates: [13.405, 52.52],
@@ -169,7 +175,7 @@ export const events: Event[] = [
       "A vibrant tech meetup in Berlin's startup ecosystem, exploring the intersection of innovation and blockchain technology.",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop",
+        url: "images/esp-crbBerlin.png",
         alt: "Berlin tech meetup",
         caption: "Startup ecosystem networking",
       },
@@ -180,13 +186,14 @@ export const events: Event[] = [
       "Innovation showcase",
     ],
     venue: "Factory Berlin",
-    attendees: 180,
+    attendees: 13,
+    link: "https://luma.com/u407uyxp",
   },
 
   // Future Events
   {
     id: "seoul-2025",
-    title: "Espresso Seoul Innovation Summit",
+    title: "Espresso & Partner Brews | KBW",
     location: "Seoul",
     country: "Korea",
     coordinates: [126.978, 37.5665],
@@ -194,14 +201,21 @@ export const events: Event[] = [
     type: "future",
     description:
       "An upcoming innovation summit in Seoul, showcasing the latest in blockchain technology and its applications in the Korean market.",
-    images: [],
+    images: [
+      {
+        url: "images/esp-brews.png",
+        alt: "Seoul event",
+        caption: "Seoul event",
+      },
+    ],
     highlights: [
       "Korean market integration strategies",
       "Innovation showcase",
       "Regional partnership announcements",
     ],
-    venue: "COEX Convention Center",
+    venue: "Mtl cafe & bakery Hannam",
     attendees: 250,
+    link: "https://luma.com/h9uxi7c1",
   },
   {
     id: "buenos-aires-2025",
