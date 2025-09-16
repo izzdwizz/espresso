@@ -57,8 +57,17 @@ export default function Home() {
   const openFullscreenMap = () => setIsMapFullscreen(true);
   const closeFullscreenMap = () => setIsMapFullscreen(false);
 
-  // Get unique countries for filter dropdown
-  const countries = Array.from(new Set(events.map((event) => event.country)));
+  // Get unique countries for filter dropdown based on selected event type
+  const countries = Array.from(
+    new Set(
+      events
+        .filter((event) => {
+          if (filter.type === "all") return true;
+          return event.type === filter.type;
+        })
+        .map((event) => event.country)
+    )
+  );
 
   return (
     <div className="min-h-screen bg-white p-4">
@@ -83,20 +92,22 @@ export default function Home() {
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-px bg-white"></div>
                   <span className="text-white text-lg">01</span>
-                  <span className="text-white text-lg">Real-time finality</span>
+                  <span className="text-white text-lg">
+                    Seamless Event Discovery
+                  </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-px bg-white"></div>
                   <span className="text-white text-lg">02</span>
                   <span className="text-white text-lg">
-                    Crosschain composability
+                    Cross-Event Connectivity
                   </span>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-px bg-white"></div>
                   <span className="text-white text-lg">03</span>
                   <span className="text-white text-lg">
-                    Ethereum compatibility
+                    Future-Proof Access
                   </span>
                 </div>
               </div>
@@ -107,12 +118,14 @@ export default function Home() {
               <div className="relative">
                 <select
                   value={filter.type}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const newType = e.target.value as "all" | "past" | "future";
                     setFilter({
                       ...filter,
-                      type: e.target.value as "all" | "past" | "future",
-                    })
-                  }
+                      type: newType,
+                      country: undefined, // Reset country filter when type changes
+                    });
+                  }}
                   className="w-full bg-transparent text-white border-l-[0.5px] border-b-[0.5px] border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
                 >
                   <option

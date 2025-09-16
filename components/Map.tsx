@@ -30,7 +30,7 @@ const Pin: React.FC<{ size?: number; time?: string }> = ({
         stroke: "none",
         filter:
           time === "past"
-            ? "drop-shadow(0 0 15px rgba(221, 0, 0, 0.8))"
+            ? "drop-shadow(0 0 15px rgba(247, 20, 20, 0.8))"
             : "drop-shadow(0 0 15px #97effb",
       }}
     >
