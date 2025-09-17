@@ -28,11 +28,8 @@ const Pin: React.FC<{ size?: number; time?: string }> = ({
         cursor: "pointer",
         fill: time === "past" ? "#d00" : "#1cb7ff",
         stroke: "none",
-        filter:
-          time === "past"
-            ? "drop-shadow(0 0 15px rgba(247, 20, 20, 0.8))"
-            : "drop-shadow(0 0 15px #97effb",
       }}
+      className={time === "past" ? "glow-past" : "glow-future"}
     >
       <path d={ICON} />
     </svg>
