@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { Event } from "@/types/events";
@@ -28,6 +29,18 @@ const Map: React.FC<MapProps> = ({
     new globalThis.Map<string, mapboxgl.Marker>()
   );
 
+  const buildGeoJSON = (list: Event[]): GeoJSON.FeatureCollection => ({
+    type: "FeatureCollection",
+    features: list.map((ev) => ({
+      type: "Feature",
+      properties: { id: ev.id, weight: ev.type === "future" ? 2 : 1 },
+      geometry: {
+        type: "Point",
+        coordinates: [ev.coordinates[0], ev.coordinates[1]],
+      },
+    })),
+  });
+
   useEffect(() => {
     if (!mapContainer.current) return;
 
@@ -52,6 +65,110 @@ const Map: React.FC<MapProps> = ({
     map.current.on("style.load", () => {
       if (map.current) {
         map.current.setFog({});
+      }
+    });
+
+    // Add heatmap source + layers when map is ready
+    map.current.on("load", () => {
+      if (!map.current) return;
+      if (!map.current.getSource("events")) {
+        map.current.addSource("events", {
+          type: "geojson",
+          data: buildGeoJSON(events) as any,
+        });
+
+        // Heatmap layer
+        map.current.addLayer({
+          id: "events-heatmap",
+          type: "heatmap",
+          source: "events",
+          maxzoom: 9,
+          paint: {
+            "heatmap-weight": [
+              "interpolate",
+              ["linear"],
+              ["get", "weight"],
+              0,
+              0,
+              2,
+              1,
+            ],
+            "heatmap-intensity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0,
+              0.6,
+              9,
+              2.0,
+            ],
+            "heatmap-color": [
+              "interpolate",
+              ["linear"],
+              ["heatmap-density"],
+              0,
+              "rgba(0,0,0,0)",
+              0.2,
+              "#3b3b3b",
+              0.4,
+              "#6e4322",
+              0.6,
+              "#b67237",
+              0.8,
+              "#e6a96e",
+              1,
+              "#fff0d9",
+            ],
+            "heatmap-radius": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0,
+              2,
+              4,
+              10,
+              9,
+              24,
+            ],
+            "heatmap-opacity": [
+              "interpolate",
+              ["linear"],
+              ["zoom"],
+              0,
+              0.6,
+              9,
+              0.2,
+            ],
+          },
+        });
+
+        // Circle layer for points as you zoom in
+        map.current.addLayer({
+          id: "events-point",
+          type: "circle",
+          source: "events",
+          minzoom: 5,
+          paint: {
+            "circle-radius": [
+              "interpolate",
+              ["exponential", 1.5],
+              ["zoom"],
+              5,
+              2,
+              12,
+              8,
+            ],
+            "circle-color": [
+              "case",
+              ["==", ["get", "weight"], 2],
+              "#b67237",
+              "#948481",
+            ],
+            "circle-stroke-width": 1,
+            "circle-stroke-color": "#ffffff",
+            "circle-opacity": 0.9,
+          },
+        });
       }
     });
 
@@ -136,6 +253,14 @@ const Map: React.FC<MapProps> = ({
       }
     };
 
+    // Update heatmap source data
+    const src = map.current.getSource("events") as
+      | mapboxgl.GeoJSONSource
+      | undefined;
+    if (src) {
+      src.setData(buildGeoJSON(events) as any);
+    }
+
     return () => {
       (window as any).selectEvent = undefined;
     };
@@ -170,7 +295,12 @@ const Map: React.FC<MapProps> = ({
   }, [selectedEvent]);
 
   return (
-    <div className="relative w-full h-full">
+    <motion.div
+      className="relative w-full h-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.9, ease: "easeOut" }}
+    >
       <div ref={mapContainer} className="w-full h-full" />
 
       {/* Toggle button */}
@@ -182,7 +312,7 @@ const Map: React.FC<MapProps> = ({
       >
         {isGlobe ? "Switch to Flat Map" : "Switch to Globe"}
       </button>
-    </div>
+    </motion.div>
   );
 };
 

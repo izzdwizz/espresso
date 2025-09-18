@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Event, EventFilter } from "@/types/events";
 import { getCountries } from "@/data/events";
 import { IoCalendar, IoLocation } from "react-icons/io5";
+import { motion } from "framer-motion";
 
 interface EventControlsProps {
   events: Event[];
@@ -52,7 +53,12 @@ const EventControls: React.FC<EventControlsProps> = ({
   };
 
   return (
-    <aside className="absolute top-4 left-4 bottom-4 z-30 w-[320px] max-w-[85vw] bg-white/85 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/40 overflow-hidden">
+    <motion.aside
+      className="absolute top-4 left-4 bottom-4 z-30 w-[320px] max-w-[85vw] bg-white/85 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
+      initial={{ opacity: 0, x: -16 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
       <div className="p-4 border-b border-white/40">
         <h3 className="text-xl font-bold text-gray-900">Espresso Events</h3>
         <p className="text-xs text-gray-600 mt-1">
@@ -66,10 +72,12 @@ const EventControls: React.FC<EventControlsProps> = ({
             Event Type
           </label>
           <div className="grid grid-cols-3 gap-2">
-            {(["all", "future", "past"] as const).map((type) => (
+            {["all", "future", "past"].map((type) => (
               <button
                 key={type}
-                onClick={() => handleEventTypeChange(type)}
+                onClick={() =>
+                  handleEventTypeChange(type as "all" | "future" | "past")
+                }
                 className={`px-3 py-2 rounded-full text-sm font-medium transition-all ${
                   filter.type === type
                     ? "bg-black text-white"
@@ -107,7 +115,7 @@ const EventControls: React.FC<EventControlsProps> = ({
 
         {/* Event Count */}
         <div className="text-xs text-gray-600">
-          {filteredEvents.length} result{filteredEvents.length !== 1 ? "s" : ""}
+          {filteredEvents.length} event{filteredEvents.length !== 1 ? "s" : ""}
         </div>
       </div>
 
@@ -124,8 +132,8 @@ const EventControls: React.FC<EventControlsProps> = ({
               <li key={event.id}>
                 <button
                   onClick={() => onEventSelect(event)}
-                  onMouseEnter={() => onHoverEvent && onHoverEvent(event)}
-                  onMouseLeave={() => onHoverEvent && onHoverEvent(null)}
+                  // onMouseEnter={() => onHoverEvent && onHoverEvent(event)}
+                  // onMouseLeave={() => onHoverEvent && onHoverEvent(null)}
                   className={`w-full text-left rounded-xl p-3 transition-all border ${
                     isActive
                       ? "bg-black text-white border-black"
@@ -162,7 +170,7 @@ const EventControls: React.FC<EventControlsProps> = ({
           })}
         </ul>
       </div>
-    </aside>
+    </motion.aside>
   );
 };
 

@@ -2,10 +2,16 @@
 
 import Logo from "@/public/images/Logo";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const Header: React.FC = () => {
   return (
-    <header className="bg-espresso-secondary  shadow-lg">
+    <motion.header
+      className="bg-espresso-secondary  shadow-lg"
+      initial={{ opacity: 0, y: -12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
       <div className=" mx-auto py-1 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -43,7 +49,7 @@ const Header: React.FC = () => {
           </div>
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 };
 

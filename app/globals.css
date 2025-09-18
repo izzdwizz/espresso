@@ -64,7 +64,7 @@
   font-display: swap;
 }
 body {
-  background: black;
+  background: #f7efe7;
   color: var(--foreground);
   font-family: "Body", "IBM Plex Mono", monospace;
   margin: 0;
@@ -80,6 +80,9 @@ h4,
 h5,
 h6 {
   font-family: "Main", "PP Neue Montreal", sans-serif;
+}
+* {
+  outline: none;
 }
 
 button {
@@ -227,4 +230,42 @@ a.mapboxgl-ctrl-logo {
 
 .mapboxgl-ctrl-group:not(:empty) {
   visibility: hidden;
+}
+
+/* Pulsing glow for map pins */
+@keyframes glowBlurRed {
+  0% {
+    filter: drop-shadow(0 0 9px rgba(247, 20, 20, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(247, 20, 20, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 9px rgba(247, 20, 20, 0.8));
+  }
+}
+
+@keyframes glowBlurBlue {
+  0% {
+    filter: drop-shadow(0 0 9px rgba(151, 239, 251, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(151, 239, 251, 0.8));
+  }
+  100% {
+    filter: drop-shadow(0 0 9px rgba(151, 239, 251, 0.8));
+  }
+}
+
+.glow-past {
+  animation: glowBlurRed 0.2s ease-in-out infinite;
+}
+
+.glow-future {
+  animation: glowBlurBlue 0.2s ease-in-out infinite;
+}
+
+/* Map custom marker base */
+.marker {
+  border-radius: 9999px;
 }

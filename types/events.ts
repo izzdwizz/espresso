@@ -17,6 +17,7 @@ export interface Event {
   highlights?: string[];
   venue?: string;
   attendees?: number;
+  link?: string;
 }
 
 export interface EventFilter {

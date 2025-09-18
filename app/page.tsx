@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 import Header from "@/components/Header";
 import EventControls from "@/components/EventControls";
 import EventModal from "@/components/EventModal";
@@ -24,7 +25,7 @@ const Map = dynamic(() => import("@/components/Map"), {
 export default function Home() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isGlobe, setIsGlobe] = useState(true);
+  const [isGlobe, setIsGlobe] = useState(false);
   const [filter, setFilter] = useState<EventFilter>({ type: "all" });
   const [hoveredEvent, setHoveredEvent] = useState<Event | null>(null);
 
@@ -50,14 +51,19 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-transparent">
       {/* Header */}
       <Header />
 
       {/* Main Content */}
       <main className="relative">
         {/* Map Section */}
-        <section className="relative h-[92dvh] min-h-[90vh] w-full">
+        <motion.section
+          className="relative h-[92dvh] min-h-[90vh] w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.0, ease: "easeOut" }}
+        >
           <Map
             events={filteredEvents}
             selectedEvent={selectedEvent}
@@ -98,12 +104,19 @@ export default function Home() {
               </svg>
             </a>
           </div>
-        </section>
+        </motion.section>
 
-        {/* Past Events Section */}
-        <section className="py-16 px-4 bg-gray-50" id="past-events">
+        {/* Explore Past Events */}
+        <motion.section
+          className="py-16 px-4 bg-[#f7efe7]"
+          id="past-events"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary mb-10 pb-4 text-center">
+            <h2 className="text-5xl font-bold text-[#2b160f] mb-10 pb-4 text-center">
               Explore Past Events
             </h2>
             <EventCarousel
@@ -111,44 +124,71 @@ export default function Home() {
               onEventSelect={handleEventSelect}
             />
           </div>
-        </section>
+        </motion.section>
 
-        {/* Sign Up Section */}
-        <section className="py-16 px-4 bg-espresso-primary">
-          <div className="max-w-4xl mx-auto text-center future-events">
-            <h2 className="text-4xl font-bold text-white mb-4">
-              Stay Updated on Future Events
+        {/* Explore Future Events */}
+        <motion.section
+          className="py-16 px-4 bg-[#2b160f] rounded-[5rem] my-6 mx-6"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-5xl font-bold text-white mb-10 pb-4 text-center">
+              Where we'll be next?
             </h2>
-            <p className="text-white mb-8 text-lg font">
-              Be the first to know about upcoming Espresso events around the
-              world
+            <EventCarousel
+              events={events.filter((event) => event.type === "future")}
+              onEventSelect={handleEventSelect}
+              direction="right"
+              variant="dark"
+            />
+          </div>
+        </motion.section>
+
+        {/* Sign Up Section (Branded) */}
+        <motion.section
+          className="py-20 px-4"
+          style={{ background: "#cc9c74" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="max-w-4xl mx-auto text-center future-events">
+            <div
+              className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm"
+              style={{ background: "#5a2b1a", color: "#ffe9d6" }}
+            >
+              <span>Season 2</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-3">
+              Caffeinated Creators
+            </h2>
+            <p className="text-white/80 mb-8 text-lg">
+              Get event drops, invites, and recaps in your inbox.
             </p>
-            <div className="relative max-w-md mx-auto">
-              <div className="relative bg-transparent border-[0.5px] border-[#fefefe] rounded-full px-6 py-4 flex items-center">
+            <div className="relative max-w-2xl mx-auto">
+              <div className="relative bg-white/10 border border-white/15 rounded-full px-6 py-3 flex items-center backdrop-blur-sm">
                 <input
                   type="email"
-                  placeholder="Subscribe to our newsletter"
-                  className="flex-1 bg-transparent text-[#fefefe] placeholder-[#fefefe] focus:outline-none text-sm"
+                  placeholder="Enter your email"
+                  className="flex-1 bg-transparent text-white placeholder-white/70 focus:outline-none text-sm"
                 />
-                <button className="absolute right-1 w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-all duration-200 shadow-lg">
-                  <svg
-                    className="w-4 h-4 text-black"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                <button
+                  className="ml-3 px-5 py-2 rounded-full font-semibold text-sm"
+                  style={{ background: "#b67237", color: "white" }}
+                >
+                  Subscribe
                 </button>
               </div>
+              <p className="text-white/60 text-xs mt-3">
+                No spam. Unsubscribe anytime.
+              </p>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Footer */}
         <footer className="bg-gray-900 text-white py-12 px-4 footer">
