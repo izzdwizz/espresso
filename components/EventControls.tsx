@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo } from "react";
 import { Event, EventFilter } from "@/types/events";
 import { getCountries } from "@/data/events";
-import { IoSearch, IoClose } from "react-icons/io5";
+import { IoCalendar, IoLocation } from "react-icons/io5";
 
 interface EventControlsProps {
   events: Event[];
@@ -11,6 +11,8 @@ interface EventControlsProps {
   filter: EventFilter;
   onFilterChange: (filter: EventFilter) => void;
   onEventSelect: (event: Event) => void;
+  hoveredEventId?: string | null;
+  onHoverEvent?: (event: Event | null) => void;
 }
 
 const EventControls: React.FC<EventControlsProps> = ({
@@ -19,14 +21,17 @@ const EventControls: React.FC<EventControlsProps> = ({
   filter,
   onFilterChange,
   onEventSelect,
+  hoveredEventId,
+  onHoverEvent,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
   const countries = getCountries();
-  const filteredEvents = events.filter((event) => {
-    if (filter.type !== "all" && event.type !== filter.type) return false;
-    if (filter.country && event.country !== filter.country) return false;
-    return true;
-  });
+  const filteredEvents = useMemo(() => {
+    return events.filter((event) => {
+      if (filter.type !== "all" && event.type !== filter.type) return false;
+      if (filter.country && event.country !== filter.country) return false;
+      return true;
+    });
+  }, [events, filter]);
 
   const handleEventTypeChange = (type: "all" | "past" | "future") => {
     onFilterChange({ ...filter, type });
@@ -47,102 +52,117 @@ const EventControls: React.FC<EventControlsProps> = ({
   };
 
   return (
-    <div className="absolute top-4 left-4 z-30">
-      {/* Search Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-white/80 shadow-lg rounded-[2rem] px-4 py-3 flex items-center gap-2 hover:shadow-xl transition-all duration-200 font-medium text-gray-700"
-      >
-        <IoSearch className="w-5 h-5" />
-        <span>Search Events</span>
-      </button>
-
-      {/* Dropdown Panel */}
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-80 bg-white/70 rounded-lg shadow-xl border border-gray-200 overflow-hidden animate-in slide-in-from-top-2 duration-200">
-          <div className="p-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg  font-semibold text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary">
-                Filter Events
-              </h3>
+    <aside className="absolute top-4 left-4 bottom-4 z-30 w-[320px] max-w-[85vw] bg-white/85 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/40 overflow-hidden">
+      <div className="p-4 border-b border-white/40">
+        <h3 className="text-xl font-bold text-gray-900">Espresso Events</h3>
+        <p className="text-xs text-gray-600 mt-1">
+          Explore past and upcoming happenings
+        </p>
+      </div>
+      <div className="p-4 space-y-4">
+        {/* Event Type Filter */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Event Type
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {(["all", "future", "past"] as const).map((type) => (
               <button
-                onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-gray-100 bg-black text-white rounded-full transition-colors"
+                key={type}
+                onClick={() => handleEventTypeChange(type)}
+                className={`px-3 py-2 rounded-full text-sm font-medium transition-all ${
+                  filter.type === type
+                    ? "bg-black text-white"
+                    : "bg-white/70 text-gray-800 hover:bg-white"
+                }`}
               >
-                <IoClose className="w-5 h-5 text-white" />
+                {type === "all"
+                  ? "All"
+                  : type === "future"
+                  ? "Upcoming"
+                  : "Past"}
               </button>
-            </div>
-
-            {/* Event Type Filter */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Event Type
-              </label>
-              <select
-                value={filter.type}
-                onChange={(e) =>
-                  handleEventTypeChange(
-                    e.target.value as "all" | "past" | "future"
-                  )
-                }
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-espresso-primary focus:border-transparent"
-              >
-                <option value="all">All Events</option>
-                <option value="future">Future Events</option>
-                <option value="past">Past Events</option>
-              </select>
-            </div>
-
-            {/* Country Filter */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Country
-              </label>
-              <select
-                value={filter.country || "all"}
-                onChange={(e) => handleCountryChange(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-espresso-primary focus:border-transparent"
-              >
-                <option value="all">All Countries</option>
-                {countries.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Event List */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Select Event
-              </label>
-              <select
-                value={selectedEvent?.id || ""}
-                onChange={(e) => handleEventSelect(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-espresso-primary focus:border-transparent"
-              >
-                <option value="" disabled>
-                  Choose an event
-                </option>
-                {filteredEvents.map((event) => (
-                  <option key={event.id} value={event.id}>
-                    {event.title} (
-                    {event.type === "future" ? "Upcoming" : "Past"})
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Event Count */}
-            <div className="text-sm text-gray-600 mb-4">
-              {filteredEvents.length} event
-              {filteredEvents.length !== 1 ? "s" : ""} found
-            </div>
+            ))}
           </div>
         </div>
-      )}
-    </div>
+
+        {/* Country Filter */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Country
+          </label>
+          <select
+            value={filter.country || "all"}
+            onChange={(e) => handleCountryChange(e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-espresso-primary focus:border-transparent bg-white/80"
+          >
+            <option value="all">All Countries</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Event Count */}
+        <div className="text-xs text-gray-600">
+          {filteredEvents.length} result{filteredEvents.length !== 1 ? "s" : ""}
+        </div>
+      </div>
+
+      {/* List */}
+      <div
+        className="px-2 pb-2 overflow-y-auto"
+        style={{ maxHeight: "calc(100% - 190px)" }}
+      >
+        <ul className="space-y-2">
+          {filteredEvents.map((event) => {
+            const isActive = selectedEvent?.id === event.id;
+            const isHovered = hoveredEventId === event.id;
+            return (
+              <li key={event.id}>
+                <button
+                  onClick={() => onEventSelect(event)}
+                  onMouseEnter={() => onHoverEvent && onHoverEvent(event)}
+                  onMouseLeave={() => onHoverEvent && onHoverEvent(null)}
+                  className={`w-full text-left rounded-xl p-3 transition-all border ${
+                    isActive
+                      ? "bg-black text-white border-black"
+                      : isHovered
+                      ? "bg-white border-gray-200 shadow"
+                      : "bg-white/80 border-white/60 hover:bg-white"
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold">{event.title}</span>
+                    <span
+                      className={`text-[10px] px-2 py-0.5 rounded-full border ${
+                        event.type === "future"
+                          ? "bg-espresso-primary/10 text-espresso-primary border-espresso-primary/30"
+                          : "bg-gray-100 text-gray-700 border-gray-300"
+                      }`}
+                    >
+                      {event.type === "future" ? "Upcoming" : "Past"}
+                    </span>
+                  </div>
+                  <div className="mt-1 flex items-center gap-3 text-xs text-gray-600">
+                    <span className="inline-flex items-center gap-1">
+                      <IoLocation className="w-3 h-3" />
+                      {event.location}, {event.country}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <IoCalendar className="w-3 h-3" />
+                      {event.date}
+                    </span>
+                  </div>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </aside>
   );
 };
 

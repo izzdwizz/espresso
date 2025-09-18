@@ -26,6 +26,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isGlobe, setIsGlobe] = useState(true);
   const [filter, setFilter] = useState<EventFilter>({ type: "all" });
+  const [hoveredEvent, setHoveredEvent] = useState<Event | null>(null);
 
   // Filter events based on current filter
   const filteredEvents = events.filter((event) => {
@@ -63,6 +64,7 @@ export default function Home() {
             onEventSelect={handleEventSelect}
             isGlobe={isGlobe}
             onToggleProjection={handleToggleProjection}
+            hoveredEvent={hoveredEvent}
           />
 
           {/* Search Controls */}
@@ -72,6 +74,8 @@ export default function Home() {
             filter={filter}
             onFilterChange={setFilter}
             onEventSelect={handleEventSelect}
+            hoveredEventId={hoveredEvent?.id}
+            onHoverEvent={setHoveredEvent}
           />
 
           <div className="absolute bottom-6 right-6 z-30 fade-in-delay-2">

@@ -11,6 +11,7 @@ interface MapProps {
   onEventSelect: (event: Event) => void;
   isGlobe: boolean;
   onToggleProjection: () => void;
+  hoveredEvent?: Event | null;
 }
 
 const Map: React.FC<MapProps> = ({
@@ -19,10 +20,13 @@ const Map: React.FC<MapProps> = ({
   onEventSelect,
   isGlobe,
   onToggleProjection,
+  hoveredEvent,
 }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const markers = useRef<mapboxgl.Marker[]>([]);
+  const markers = useRef<globalThis.Map<string, mapboxgl.Marker>>(
+    new globalThis.Map<string, mapboxgl.Marker>()
+  );
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -35,7 +39,7 @@ const Map: React.FC<MapProps> = ({
     // Initialize map
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: "mapbox://styles/mapbox/satellite-streets-v12",
+      style: "mapbox://styles/mapbox/dark-v11",
       center: [0, 20],
       zoom: 1.3,
       projection: isGlobe ? "globe" : "mercator",
@@ -71,31 +75,32 @@ const Map: React.FC<MapProps> = ({
 
     // Clear existing markers
     markers.current.forEach((marker) => marker.remove());
-    markers.current = [];
+    markers.current.clear();
 
     // Add new markers
     events.forEach((event) => {
-      const markerColor = event.type === "future" ? "#b67237" : "#948481";
+      const el = document.createElement("div");
+      el.className = event.type === "future" ? "glow-future" : "glow-past";
+      const size = 16;
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+      el.style.borderRadius = "50%";
+      el.style.background = event.type === "future" ? "#b67237" : "#948481";
+      el.style.border = "2px solid rgba(255,255,255,0.9)";
+      el.style.boxShadow = "0 0 0 2px rgba(0,0,0,0.25)";
+      el.style.cursor = "pointer";
 
-      const marker = new mapboxgl.Marker({
-        color: markerColor,
-        scale: 1.2,
-      })
+      const marker = new mapboxgl.Marker({ element: el })
         .setLngLat(event.coordinates)
         .addTo(map.current!);
 
       // Create popup content
       const popupContent = `
-        <div class="p-3 min-w-[200px]">
-          <h3 class="font-bold text-lg text-gray-800 mb-2">${event.title}</h3>
-          <p class="text-sm text-gray-600 mb-2">${event.location}, ${event.country}</p>
-          <p class="text-sm text-gray-500 mb-3">${event.date}</p>
-          <button 
-            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors"
-            onclick="window.selectEvent('${event.id}')"
-          >
-            View Details
-          </button>
+        <div style="min-width:220px;padding:10px;border-radius:12px;background:#111;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,0.35);">
+          <div style="font-weight:700;font-size:14px;line-height:1.2;margin-bottom:6px;">${event.title}</div>
+          <div style="font-size:12px;opacity:0.8;margin-bottom:2px;">${event.location}, ${event.country}</div>
+          <div style="font-size:12px;opacity:0.8;margin-bottom:8px;">${event.date}</div>
+          <button style="background:#b67237;color:#fff;padding:6px 10px;border-radius:9999px;font-size:12px;border:none;cursor:pointer" onclick="window.selectEvent('${event.id}')">View details</button>
         </div>
       `;
 
@@ -105,11 +110,21 @@ const Map: React.FC<MapProps> = ({
       }).setHTML(popupContent);
 
       marker.setPopup(popup);
-      markers.current.push(marker);
+      markers.current.set(event.id, marker);
 
       // Add click handler
       marker.getElement().addEventListener("click", () => {
         onEventSelect(event);
+      });
+
+      // Hover handlers to show/hide popup
+      marker.getElement().addEventListener("mouseenter", () => {
+        const p = marker.getPopup();
+        if (p && map.current) p.addTo(map.current);
+      });
+      marker.getElement().addEventListener("mouseleave", () => {
+        const p = marker.getPopup();
+        if (p) p.remove();
       });
     });
 
@@ -125,6 +140,21 @@ const Map: React.FC<MapProps> = ({
       (window as any).selectEvent = undefined;
     };
   }, [events, onEventSelect]);
+
+  // Open popup for hovered event from sidebar
+  useEffect(() => {
+    if (!map.current) return;
+    // Close all popups first
+    markers.current.forEach((m) => {
+      const p = m.getPopup();
+      if (p) p.remove();
+    });
+    if (hoveredEvent) {
+      const m = markers.current.get(hoveredEvent.id);
+      const p = m?.getPopup();
+      if (m && p) p.addTo(map.current);
+    }
+  }, [hoveredEvent]);
 
   // Fly to selected event
   useEffect(() => {
