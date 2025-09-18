@@ -160,6 +160,10 @@ footer {
   transition-duration: 500ms;
 }
 
+.espresso-text {
+  color: #451f17;
+}
+
 /* Fade-in animations */
 @keyframes fadeInUp {
   from {

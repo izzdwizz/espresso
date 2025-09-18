@@ -7,6 +7,7 @@ import EventCarousel from "@/components/EventCarousel";
 import { Event, EventFilter } from "@/types/events";
 import { events } from "@/data/events";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
+import { IoCalendar, IoLocation } from "react-icons/io5";
 import { FiMaximize2 } from "react-icons/fi";
 import Logo from "@/public/images/Logo";
 
@@ -245,51 +246,93 @@ export default function Home() {
         </div>
       )}
 
-      {/* Past Events Section */}
-      <section className="py-16 px-4 bg-gray-50" id="past-events">
+      {/* Upcoming Events */}
+      <section className="py-12 mt-[5rem] px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-espresso-primary to-espresso-secondary mb-10 pb-4 text-center">
-            Explore Past Events
-          </h2>
-          <EventCarousel
-            events={events.filter((event) => event.type === "past")}
-            onEventSelect={handleEventSelect}
-          />
+          <div className="relative flex items-center gap-3 mb-6">
+            <div className="absolute -top-12 w-4 h-4">
+              <span className="absolute left-0 top-2.5 w-6 h-[2px] bg-gray-400 rounded" />
+              <span className="absolute left-0 top-0 w-[2px] h-3 bg-gray-400 rounded" />
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              Upcoming Events
+            </h2>
+          </div>
+          <div className="space-y-4">
+            {events
+              .filter((e) => e.type === "future")
+              .map((event) => (
+                <button
+                  key={event.id}
+                  onClick={() => handleEventSelect(event)}
+                  className="w-full text-left bg-[slate-200]/10 rounded-xl border border-gray-200 shadow-sm p-4 md:p-5 md:py-7 hover:shadow-md transition"
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
+                    {/* Title + meta */}
+                    <div>
+                      <div className="font-mono text-[15px] md:text-base espresso-text font-semibold text-gray-900">
+                        {event.title}
+                      </div>
+                      <div className="mt-2 flex flex-col items-start gap-4 text-xs espresso-text">
+                        <span className="inline-flex items-center gap-1">
+                          <IoCalendar className="w-4 h-4" />
+                          {event.date}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <IoLocation className="w-4 h-4" />
+                          {event.venue || `${event.location}, ${event.country}`}
+                        </span>
+                      </div>
+                    </div>
+                    {/* Description */}
+                    <div className="text-xs md:text-sm text-gray-600 md:col-span-2">
+                      {event.description}
+                    </div>
+                  </div>
+                </button>
+              ))}
+          </div>
         </div>
       </section>
 
-      {/* Sign Up Section */}
-      <section className="py-16 px-4 bg-espresso-primary">
-        <div className="max-w-4xl mx-auto text-center future-events">
-          <h2 className="text-4xl font-bold text-white mb-4">
-            Stay Updated on Future Events
-          </h2>
-          <p className="text-white mb-8 text-lg">
-            Be the first to know about upcoming Espresso events around the world
-          </p>
-          <div className="relative max-w-md mx-auto">
-            <div className="relative bg-transparent border-[0.5px] border-[#fefefe] rounded-full px-6 py-4 flex items-center">
-              <input
-                type="email"
-                placeholder="Subscribe to our newsletter"
-                className="flex-1 bg-transparent text-[#fefefe] placeholder-[#fefefe] focus:outline-none text-sm"
-              />
-              <button className="absolute right-1 w-10 h-10 bg-white rounded-full flex items-center justify-center hover:scale-105 transition-all duration-200 shadow-lg">
-                <svg
-                  className="w-4 h-4 text-black"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+      {/* Past Events */}
+      <section className="py-16 px-4 bg-white" id="past-events">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-6 relative">
+            <div className="absolute -top-12 w-4 h-4">
+              <span className="absolute left-0 top-2.5 w-6 h-[2px] bg-gray-400 rounded" />
+              <span className="absolute left-0 top-0 w-[2px] h-3 bg-gray-400 rounded" />
             </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+              Past Events
+            </h2>
+          </div>
+          <div className="space-y-4">
+            {events
+              .filter((e) => e.type === "past")
+              .map((event) => (
+                <button
+                  key={event.id}
+                  onClick={() => handleEventSelect(event)}
+                  className="w-full text-left bg-slate-200/10 rounded-xl border border-gray-200 p-4 md:p-5 md:py-7 hover:shadow-md transition"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div className="font-mono text-[15px] md:text-base espresso-text font-semibold">
+                      {event.title}
+                    </div>
+                    <div className="flex items-center gap-4 text-xs text-gray-600">
+                      <span className="inline-flex items-center gap-1">
+                        <IoCalendar className="w-4 h-4" />
+                        {event.date}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <IoLocation className="w-4 h-4" />
+                        {event.venue || `${event.location}, ${event.country}`}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              ))}
           </div>
         </div>
       </section>
