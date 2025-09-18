@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 const Header: React.FC = () => {
   return (
     <motion.header
-      className="bg-espresso-secondary  shadow-lg"
+      className="bg-[#4c271d]  shadow-lg"
       initial={{ opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

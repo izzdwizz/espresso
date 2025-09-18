@@ -56,7 +56,7 @@ export default function Home() {
       <Header />
 
       {/* Main Content */}
-      <main className="relative">
+      <main className="relative bg-[#f7efe7]">
         {/* Map Section */}
         <motion.section
           className="relative h-[92dvh] min-h-[90vh] w-full"
@@ -135,7 +135,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-5xl font-bold text-white mb-10 pb-4 text-center">
+            <h2 className="text-5xl font-bold text-white/70 mb-10 pb-4 text-center">
               Where we'll be next?
             </h2>
             <EventCarousel
@@ -191,7 +191,7 @@ export default function Home() {
         </motion.section>
 
         {/* Footer */}
-        <footer className="bg-gray-900 text-white py-12 px-4 footer">
+        <footer className="bg-gray-900  text-white py-12 px-4 footer">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               <div className="col-span-1 md:col-span-2">

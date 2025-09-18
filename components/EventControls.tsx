@@ -54,7 +54,7 @@ const EventControls: React.FC<EventControlsProps> = ({
 
   return (
     <motion.aside
-      className="absolute top-4 left-4 bottom-4 z-30 w-[320px] max-w-[85vw] bg-white/85 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
+      className="absolute top-4 left-4 bottom-4 z-30 w-[320px] max-w-[85vw] bg-[rgb(248_239_231)]/85 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
       initial={{ opacity: 0, x: -16 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
@@ -102,7 +102,7 @@ const EventControls: React.FC<EventControlsProps> = ({
           <select
             value={filter.country || "all"}
             onChange={(e) => handleCountryChange(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-espresso-primary focus:border-transparent bg-white/80"
+            className="w-full p-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-espresso-primary focus:border-transparent bg-white/80"
           >
             <option value="all">All Countries</option>
             {countries.map((country) => (
@@ -124,7 +124,7 @@ const EventControls: React.FC<EventControlsProps> = ({
         className="px-2 pb-2 overflow-y-auto"
         style={{ maxHeight: "calc(100% - 190px)" }}
       >
-        <ul className="space-y-2">
+        <ul className="space-y-2 text-[#855e3e]">
           {filteredEvents.map((event) => {
             const isActive = selectedEvent?.id === event.id;
             const isHovered = hoveredEventId === event.id;
