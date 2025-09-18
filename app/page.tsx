@@ -63,165 +63,46 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white p-4">
       {/* Main Layout */}
-      <div
-        className={`flex h-screen transition-all duration-500 ${
-          isExpanded ? "flex-col" : "flex-row"
-        }`}
-      >
-        {/* Left Column - Header and Filters */}
-        {!isExpanded && (
-          <div className="w-1/2 p-12 flex flex-col justify-between shadow-2xl rounded-2xl bg-espresso-primary relative left-4 !z-[10]">
-            {/* Header Section */}
-            <div>
-              <Logo />
-              <h1 className="text-6xl font-bold text-white mt-8 mb-8 leading-tight">
-                The Espresso Event Map
-              </h1>
-
-              {/* Feature List */}
-              <div className="space-y-6 mb-12">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-px bg-white"></div>
-                  <span className="text-white text-lg">01</span>
-                  <span className="text-white text-lg">Real-time finality</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-px bg-white"></div>
-                  <span className="text-white text-lg">02</span>
-                  <span className="text-white text-lg">
-                    Crosschain composability
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-px bg-white"></div>
-                  <span className="text-white text-lg">03</span>
-                  <span className="text-white text-lg">
-                    Ethereum compatibility
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Filter Inputs */}
-            <div className="space-y-6">
-              <div className="relative">
-                <select
-                  value={filter.type}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      type: e.target.value as "all" | "past" | "future",
-                    })
-                  }
-                  className="w-full bg-transparent text-white border-l-2 border-b-2 border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
-                >
-                  <option
-                    value="all"
-                    className="bg-espresso-primary text-white"
-                  >
-                    All Events
-                  </option>
-                  <option
-                    value="past"
-                    className="bg-espresso-primary text-white"
-                  >
-                    Past Events
-                  </option>
-                  <option
-                    value="future"
-                    className="bg-espresso-primary text-white"
-                  >
-                    Future Events
-                  </option>
-                </select>
-              </div>
-
-              <div className="relative">
-                <select
-                  value={filter.country || ""}
-                  onChange={(e) =>
-                    setFilter({
-                      ...filter,
-                      country: e.target.value || undefined,
-                    })
-                  }
-                  className="w-full bg-transparent text-white border-l-2 border-b-2 border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
-                >
-                  <option value="" className="bg-espresso-primary text-white">
-                    All Countries
-                  </option>
-                  {countries.map((country) => (
-                    <option
-                      key={country}
-                      value={country}
-                      className="bg-espresso-primary text-white"
-                    >
-                      {country}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="relative">
-                <select
-                  value={selectedEvent?.id || ""}
-                  onChange={(e) => {
-                    const event = events.find((ev) => ev.id === e.target.value);
-                    if (event) handleEventSelect(event);
-                  }}
-                  className="w-full bg-transparent text-white border-l-2 border-b-2 border-white border-r-0 border-t-0 px-4 py-3 focus:outline-none text-lg"
-                >
-                  <option value="" className="bg-espresso-primary text-white">
-                    Select an Event
-                  </option>
-                  {filteredEvents.map((event) => (
-                    <option
-                      key={event.id}
-                      value={event.id}
-                      className="bg-espresso-primary text-white"
-                    >
-                      {event.title} - {event.country}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Right Column - Map */}
-        <div
-          className={`${
-            isExpanded ? "w-full" : "w-1/2"
-          } relative transition-all duration-500 !rounded-br-lg !rounded-tr-lg overflow-hidden relative right-4`}
-        >
+      <section className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+        {/* Left: Map (light theme, brown outlines) */}
+        <div className="w-full h-[55vh] lg:h-[60vh] rounded-2xl overflow-hidden ring-1 ring-[#b67237]/30 bg-white">
           <Map
             events={filteredEvents}
-            mapStyle="mapbox://styles/mapbox/dark-v11"
+            mapStyle="mapbox://styles/mapbox/light-v11"
             selectedEvent={selectedEvent}
             onEventSelect={handleEventSelect}
-            isGlobe={!isGlobe}
+            isGlobe={false}
             onToggleProjection={handleToggleProjection}
           />
-
-          {/* Fullscreen Icon Button */}
-          <button
-            onClick={openFullscreenMap}
-            aria-label="Open fullscreen map"
-            className="absolute top-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white p-2 rounded-lg hover:bg-white/30 transition-all duration-200"
-          >
-            <FiMaximize2 className="w-5 h-5" />
-          </button>
-
-          {/* Globe Toggle Button */}
-          <button
-            onClick={handleToggleProjection}
-            className="absolute bottom-6 right-6 z-30 bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-200"
-          >
-            {isGlobe ? "Flat Map" : "Globe View"}
-          </button>
         </div>
-      </div>
+
+        {/* Right: Heading, copy, legend */}
+        <div className="flex flex-col gap-6 pr-2">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
+            Find an event near you
+          </h1>
+          <p className="text-gray-700 text-base md:text-lg max-w-prose">
+            Discover upcoming meetups, local gatherings, and digital events
+            designed to inspire and connect you.
+          </p>
+          <div className="flex flex-col gap-3 mt-2">
+            <div className="flex items-center gap-3 text-gray-800">
+              <span
+                className="inline-block w-3.5 h-3.5 rounded-full border border-white shadow"
+                style={{ background: "#1cb7ff" }}
+              />
+              <span className="text-sm md:text-base">Upcoming Events</span>
+            </div>
+            <div className="flex items-center gap-3 text-gray-800">
+              <span
+                className="inline-block w-3.5 h-3.5 rounded-full border border-white shadow"
+                style={{ background: "#b67237" }}
+              />
+              <span className="text-sm md:text-base">Past Events</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Fullscreen Map Modal */}
       {isMapFullscreen && (

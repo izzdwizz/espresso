@@ -232,3 +232,8 @@ a.mapboxgl-ctrl-logo {
 .mapboxgl-ctrl-group:not(:empty) {
   visibility: hidden;
 }
+
+/* Subtle brownish tint to the base map to match reference */
+.sepia-map canvas {
+  filter: sepia(0.6) hue-rotate(340deg) saturate(1.2) brightness(1.02);
+}
