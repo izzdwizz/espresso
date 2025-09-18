@@ -197,15 +197,26 @@ const Map: React.FC<MapProps> = ({
     // Add new markers
     events.forEach((event) => {
       const el = document.createElement("div");
-      el.className = event.type === "future" ? "glow-future" : "glow-past";
-      const size = 16;
+      el.className = event.type === "future" ? "glow-futures" : "glow-pasta";
+      const mugColor = event.type === "future" ? "#b67237" : "#948481";
+      const accent = "#ffffff";
+      const size = 26;
       el.style.width = `${size}px`;
       el.style.height = `${size}px`;
-      el.style.borderRadius = "50%";
-      el.style.background = event.type === "future" ? "#b67237" : "#948481";
-      el.style.border = "2px solid rgba(255,255,255,0.9)";
-      el.style.boxShadow = "0 0 0 2px rgba(0,0,0,0.25)";
       el.style.cursor = "pointer";
+      el.style.display = "flex";
+      el.style.alignItems = "center";
+      el.style.justifyContent = "center";
+      el.style.transform = "translateY(-2px)";
+      el.innerHTML = `
+        <svg viewBox="0 0 24 24" width="22" height="22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="none" stroke="${accent}" stroke-width="1.2" stroke-linejoin="round">
+            <path fill="${mugColor}" d="M3 8h12v5.5A3.5 3.5 0 0 1 11.5 17h-4A3.5 3.5 0 0 1 4 13.5V8Z"/>
+            <path fill="${mugColor}" d="M15 9h2.25a2.75 2.75 0 0 1 0 5.5H15V9Z"/>
+            <rect x="5" y="18" width="10" height="1.8" rx="0.9" fill="${accent}" opacity=".8"/>
+          </g>
+        </svg>
+      `;
 
       const marker = new mapboxgl.Marker({ element: el })
         .setLngLat(event.coordinates)

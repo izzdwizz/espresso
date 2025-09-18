@@ -12,7 +12,7 @@ const Header: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className=" mx-auto py-1 px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto py-3 px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="md:block hidden"></div>

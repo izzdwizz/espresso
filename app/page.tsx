@@ -161,10 +161,10 @@ export default function Home() {
               className="inline-flex items-center gap-2 px-4 py-1 rounded-full text-sm"
               style={{ background: "#5a2b1a", color: "#ffe9d6" }}
             >
-              <span>Season 2</span>
+              <span>Stay tuned</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-3">
-              Caffeinated Creators
+              Never miss out on events!
             </h2>
             <p className="text-white/80 mb-8 text-lg">
               Get event drops, invites, and recaps in your inbox.
