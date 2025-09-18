@@ -3,12 +3,10 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import EventModal from "@/components/EventModal";
-import EventCarousel from "@/components/EventCarousel";
 import { Event, EventFilter } from "@/types/events";
 import { events } from "@/data/events";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 import { IoCalendar, IoLocation } from "react-icons/io5";
-import { FiMaximize2 } from "react-icons/fi";
 import Logo from "@/public/images/Logo";
 
 // Dynamically import Map to avoid SSR issues
@@ -115,6 +113,7 @@ export default function Home() {
               onEventSelect={handleEventSelect}
               isGlobe={false}
               onToggleProjection={handleToggleProjection}
+              // background-color="#000000"
             />
             <button
               onClick={closeFullscreenMap}
