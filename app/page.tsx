@@ -8,6 +8,7 @@ import { events } from "@/data/events";
 import { FaDiscord, FaTwitter, FaGithub } from "react-icons/fa";
 import { IoCalendar, IoLocation } from "react-icons/io5";
 import Logo from "@/public/images/Logo";
+import Header from "@/components/Header";
 
 // Dynamically import Map to avoid SSR issues
 const Map = dynamic(() => import("@/components/Map"), {
@@ -38,6 +39,14 @@ export default function Home() {
     setSelectedEvent(event);
     setIsModalOpen(true);
   };
+  const handleListEventSelect = (event: Event) => {
+    setSelectedEvent(event);
+    scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    // setIsModalOpen(true);
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -60,8 +69,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white p-4">
+      <Header />
       {/* Main Layout */}
-      <section className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+      <section className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-1 gap-10 items-center">
+        {/* Here */}
         {/* Left: Map (light theme, brown outlines) */}
         <div className="w-full h-[55vh] lg:h-[60vh] rounded-2xl overflow-hidden ring-1 ring-[#b67237]/30 bg-white">
           <Map
@@ -75,7 +86,7 @@ export default function Home() {
         </div>
 
         {/* Right: Heading, copy, legend */}
-        <div className="flex flex-col gap-6 pr-2">
+        <div className="flex flex-col gap-6 pr-2 hidden">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">
             Find an event near you
           </h1>
@@ -127,7 +138,7 @@ export default function Home() {
       )}
 
       {/* Upcoming Events */}
-      <section className="py-12 mt-[5rem] px-4 bg-white">
+      <section className="py-12 mt-[1rem] px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="relative flex items-center gap-3 mb-6">
             <div className="absolute -top-12 w-4 h-4">
@@ -144,7 +155,7 @@ export default function Home() {
               .map((event) => (
                 <button
                   key={event.id}
-                  onClick={() => handleEventSelect(event)}
+                  onClick={() => handleListEventSelect(event)}
                   className="w-full text-left bg-[slate-200]/10 rounded-xl border border-gray-200 shadow-sm p-4 md:p-5 md:py-7 hover:shadow-md transition"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
@@ -193,7 +204,7 @@ export default function Home() {
               .map((event) => (
                 <button
                   key={event.id}
-                  onClick={() => handleEventSelect(event)}
+                  onClick={() => handleListEventSelect(event)}
                   className="w-full text-left bg-slate-200/10 rounded-xl border border-gray-200 p-4 md:p-5 md:py-7 hover:shadow-md transition"
                 >
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">

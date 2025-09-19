@@ -235,5 +235,5 @@ a.mapboxgl-ctrl-logo {
 
 /* Subtle brownish tint to the base map to match reference */
 .sepia-map canvas {
-  filter: sepia(0.6) hue-rotate(340deg) saturate(1.2) brightness(1.02);
+  filter: sepia(0.6) hue-rotate(340deg) saturate(0.2) brightness(1.02);
 }
