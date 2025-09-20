@@ -224,11 +224,10 @@ const Map: React.FC<MapProps> = ({
 
       // Create popup content
       const popupContent = `
-        <div style="min-width:220px;padding:10px;border-radius:12px;background:#111;color:#fff;box-shadow:0 6px 24px rgba(0,0,0,0.35);">
+        <div style="min-width:220px;padding:10px;border-radius:12px;background:rgb(90 42 26);color:#fff;box-shadow:0 6px 24px rgba(0,0,0,0.35);">
           <div style="font-weight:700;font-size:14px;line-height:1.2;margin-bottom:6px;">${event.title}</div>
           <div style="font-size:12px;opacity:0.8;margin-bottom:2px;">${event.location}, ${event.country}</div>
           <div style="font-size:12px;opacity:0.8;margin-bottom:8px;">${event.date}</div>
-          <button style="background:#b67237;color:#fff;padding:6px 10px;border-radius:9999px;font-size:12px;border:none;cursor:pointer" onclick="window.selectEvent('${event.id}')">View details</button>
         </div>
       `;
 
